@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { motion, AnimatePresence, type PanInfo } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 
 const reviews = [
   { id: 1, image: '/Photo/review1.png', caption: 'Отзыв №1' },
@@ -14,85 +14,68 @@ const reviews = [
 
 export function ReviewSlider() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const swipeThreshold = 60;
+  const [touchStart, setTouchStart] = useState<number | null>(null);
 
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev === reviews.length - 1 ? 0 : prev + 1));
+  const nextSlide = () => setCurrentIndex((prev) => (prev === reviews.length - 1 ? 0 : prev + 1));
+  const prevSlide = () => setCurrentIndex((prev) => (prev === 0 ? reviews.length - 1 : prev - 1));
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.touches[0].clientX);
   };
 
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev === 0 ? reviews.length - 1 : prev - 1));
-  };
-
-  const handleDragEnd = (
-    _event: MouseEvent | TouchEvent | PointerEvent,
-    info: PanInfo,
-  ) => {
-    if (info.offset.x <= -swipeThreshold) {
-      nextSlide();
-      return;
-    }
-
-    if (info.offset.x >= swipeThreshold) {
-      prevSlide();
-    }
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStart === null) return;
+    const diff = touchStart - e.changedTouches[0].clientX;
+    if (diff > 50) nextSlide();
+    else if (diff < -50) prevSlide();
+    setTouchStart(null);
   };
 
   return (
-    <div className="relative w-full max-w-3xl mx-auto mt-10">
-      <div className="overflow-hidden border-8 border-black rounded-3xl shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] bg-white relative min-h-[400px]">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentIndex}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            onDragEnd={handleDragEnd}
-            initial={{ opacity: 0, scale: 0.92, x: 60 }}
-            animate={{ opacity: 1, scale: 1, x: 0 }}
-            exit={{ opacity: 0, scale: 0.92, x: -60 }}
-            transition={{ duration: 0.35, ease: 'easeInOut' }}
-            className="relative flex flex-col items-center justify-center bg-[#FFF9F0]"
-            style={{ touchAction: 'pan-y' }}
-          >
-            <img
-              src={reviews[currentIndex].image}
-              alt={reviews[currentIndex].caption}
-              className="w-full object-contain pointer-events-none"
-            />
-            <div className="absolute bottom-0 left-0 right-0 bg-black text-white p-4 text-center font-bold text-lg">
-              {reviews[currentIndex].caption}
-            </div>
-          </motion.div>
-        </AnimatePresence>
+    <div
+      className="relative w-full border-8 border-black rounded-3xl shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] overflow-hidden bg-[#FFF9F0]"
+      style={{ height: '360px' }}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
+      {/* Слайды */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentIndex}
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -50 }}
+          transition={{ duration: 0.3 }}
+          className="absolute inset-0 flex items-center justify-center pb-14 px-14"
+        >
+          <img
+            src={reviews[currentIndex].image}
+            alt={reviews[currentIndex].caption}
+            className="max-w-full max-h-full object-contain rounded-xl"
+          />
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Подпись */}
+      <div className="absolute bottom-0 left-0 right-0 h-14 bg-[#FFE800] border-t-4 border-black flex items-center justify-center z-10">
+        <p className="font-black text-lg uppercase tracking-wide">
+          {reviews[currentIndex].caption}
+        </p>
       </div>
 
+      {/* Кнопки */}
       <button
         onClick={prevSlide}
-        type="button"
-        className="absolute top-1/2 left-2 md:-left-12 transform -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 bg-[#FFE800] border-4 border-black rounded-full flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:scale-110 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all z-10"
+        className="absolute left-1 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-[#FFE800] border-4 border-black rounded-full flex items-center justify-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-0.5 transition-all"
       >
-        <ChevronLeft className="w-5 h-5 md:w-8 md:h-8 stroke-[3]" />
+        <ChevronLeft className="w-5 h-5 stroke-[3]" />
       </button>
-
       <button
         onClick={nextSlide}
-        type="button"
-        className="absolute top-1/2 right-2 md:-right-12 transform -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 bg-[#FFE800] border-4 border-black rounded-full flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:scale-110 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all z-10"
+        className="absolute right-1 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-[#FFE800] border-4 border-black rounded-full flex items-center justify-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-0.5 transition-all"
       >
-        <ChevronRight className="w-5 h-5 md:w-8 md:h-8 stroke-[3]" />
+        <ChevronRight className="w-5 h-5 stroke-[3]" />
       </button>
-
-      <div className="flex justify-center gap-2 mt-6">
-        {reviews.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentIndex(index)}
-            className={`w-4 h-4 rounded-full border-2 border-black transition-all ${
-              index === currentIndex ? 'bg-[#FF5E00] scale-125' : 'bg-white'
-            }`}
-          />
-        ))}
-      </div>
     </div>
   );
 }

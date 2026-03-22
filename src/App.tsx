@@ -7,34 +7,38 @@ function LandingPage() {
   return (
     <div className="min-h-screen bg-[#FFF9F0] text-black font-sans selection:bg-[#FFE800]">
       {/* Header */}
-      <header className="p-6 border-b-4 border-black bg-white flex justify-between items-center sticky top-0 z-40">
-        <div className="text-2xl font-black uppercase tracking-tighter bg-[#FF5E00] text-white px-4 py-1 border-4 border-black transform -rotate-2">
-          Репетитор Никита Катасонов
-        </div>
-        <a 
-          href="https://profi.ru/profile/KatasonovNA/share"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hidden md:block bg-[#FFE800] border-4 border-black px-6 py-2 font-black uppercase rounded-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all"
-        >
-          Записаться
-        </a>
-      </header>
+      <header className="px-4 py-4 border-b-4 border-black bg-white sticky top-0 z-40 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6">
+  <div className="text-xl sm:text-2xl md:text-4xl font-black uppercase tracking-tighter bg-[#FF5E00] text-white px-5 py-2 sm:px-8 md:px-12 border-4 border-black transform -rotate-2 whitespace-nowrap">
+    логика ≠ Заучивание
+  </div>
+  <a 
+    href="https://profi.ru/profile/KatasonovNA/share"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="bg-[#FFE800] border-4 border-black px-8 py-2 font-black uppercase rounded-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all text-base md:text-lg whitespace-nowrap"
+  >
+    Записаться
+  </a>
+</header>
 
-      <main className="max-w-5xl mx-auto px-4 py-12 md:py-20">
+
+
+
+      <main className="max-w-5xl mx-auto px-4 py-12 md:py-20 overflow-x-hidden">
         {/* Hero Section */}
         <section className="text-center mb-20 relative">
           <motion.h1 
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            className="text-5xl md:text-7xl font-black uppercase tracking-tight mb-6 leading-none"
+            className="text-5xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight mb-6 leading-tight break-words"
+
           >
             Математика и Информатика <br className="hidden md:block" />
-            <span className="text-[#E62020] inline-block transform rotate-2 bg-[#FFE800] px-4 border-4 border-black mt-2">без зубрежки</span>
+            <span className="text-[#E62020] inline-block transform rotate-2 bg-[#FFE800] px-2 md:px-4 border-4 border-black mt-2 max-w-full">без зубрежки</span>
           </motion.h1>
           
           <p className="text-xl md:text-2xl font-bold mb-10 max-w-3xl mx-auto bg-white border-4 border-black p-4 rounded-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transform -rotate-1">
-            Я Никита Катасонов Андреевич, онлайн-репетитор по математике и информатике с опытом более 3 лет. Помогаю разобраться в сложных темах простым языком.
+            Я Катасонов Никита Андреевич, онлайн-репетитор по математике и информатике с опытом более 3 лет. Помогаю разобраться в сложных темах простым языком.
           </p>
 
           <p className="text-lg md:text-xl font-black uppercase tracking-wide mb-6 text-[#FF5E00]">
@@ -145,9 +149,10 @@ function LandingPage() {
 
         {/* Accordion Section */}
         <section className="max-w-3xl mx-auto mb-20">
-          <h2 className="text-4xl md:text-5xl font-black uppercase text-center mb-10 transform -rotate-1">
-            <span className="bg-[#FF5E00] text-white px-4 py-2 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">Частые вопросы</span>
-          </h2>
+          <h2 className="text-3xl md:text-5xl font-black uppercase text-center mb-10">
+  <span className="inline-block bg-[#FF5E00] text-white px-4 py-2 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transform -rotate-1 whitespace-nowrap">Частые вопросы</span>
+</h2>
+
           <div className="space-y-4">
             <AccordionItem 
               title="Как проходят занятия?" 
