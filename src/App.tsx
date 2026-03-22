@@ -30,7 +30,8 @@ function LandingPage() {
           <motion.h1 
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            className="text-5xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight mb-6 leading-tight break-words"
+            className="text-3xl sm:text-5xl md:text-7xl font-black uppercase tracking-tight mb-6 leading-tight"
+
 
           >
             Математика и Информатика <br className="hidden md:block" />
